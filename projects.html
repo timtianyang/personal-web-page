@@ -1,0 +1,313 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+		<title>Tianyang Chen's projects</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- Bootstrap -->
+		<link href="assets/css/bootstrap.min.css" rel="stylesheet" media="screen">	
+  </head>
+  
+  
+  <body>	
+	<div class="container">
+	
+	    <!--########################nav bar#####################-->
+		<nav role="navigation" class="navbar navbar-default">
+		<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>				
+			</div>
+			<!-- Collection of nav links and other content for toggling -->
+			<div id="navbarCollapse" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="index.html">About</a></li>
+					<li class="active"><a href="projects.html">Projects</a></li>
+					<li><a href="cv.html">CV</a></li>
+					<li><a href="https://www.dropbox.com/s/oxzs29z4hdbosav/resume2014_updated.pdf?dl=0">Resume</a></li>
+				</ul>
+			</div>
+		</nav>
+	
+	
+	<!--##############################content############################ -->
+	<h3>A crowd-sourcing sidewalk mapping tool</h3>
+	<p>As a part of the pedestrian way finding application, a side-walk mapping tool was created
+	to allow the public to map sidewalks in their community. Even though google has a great map, accessibility info is missing. Here at PathVu, we
+	will take the lead.</p>
+	<p>The idea is to let anyone to create nodes and connect them on an intuitive user interface. The nodes, combined with sidewalk accessibility measurements, can be
+	used to create a way finding tool. The Beta of this tool will be released soon for testing even though it's not connected to any actual data-base. </p>
+	
+	<img src="pics/map.gif"></br>
+	<p>The idea is to create graphs and generate a vertices file containing connectivity. The cost of edges will be determined after we mapped the sidewalk. 
+	Dijkstra's algorithm can then be used to determine a shortest path between two points.</p>
+	
+	
+	
+	
+	</br><hr/>
+	<h3>A cape for Beaglebone</h3>1/10/2015
+	<p>
+	Because the new data acquisition system based on Bealegbone proves to be working very well and the potential of adding new features is promising, we decided to
+	make a cape for Beaglebone carrying a dsPIC. I started creating a new PCB and tried to shrink down the size to be the same as Beaglebone itself. Here is a simplified 
+	layout of the board. It mimics the shape of a Beaglebone and clicks on perfectly. Quadruple micro-controller design will be eventually be replaced.
+	</p>
+	<img src="pics/board.png"></br>
+	<p>
+	<i>Fine details were removed due to PathVu's copy rights.  </i> Different connectors will be used in this design to improve the performance under continuous vibration.
+	</p>
+	
+	
+	
+	</br><hr/>
+	<h3>High Speed Data Link</h3>12/19/2014
+	<p>
+	During the development of the new PathMeT device, I had to make sure that measurements were reliably sent to Beaglebone as fast as possible from a dsPIC.</br>
+	Because the data link was based on SPI bus, the full-duplex communication increased the difficulty of coding and debugging. I was having great progress testing
+	Beaglebone Black's SPI's performance with the following setup:</br>
+	</p>
+	<p>
+	Slave: dsPIC33EP @ 70MIPS</br>
+	Host:  Beaglebone Black Debian SPI0 (max clock 48 MHz)</br>
+	</p>
+	<p>
+	The dsPIC uses a 2048 Byte circular buffer to store measurement packages (128 Bytes). When read and write pointers meet each other, old measurements could be erased, which was not preferable for <i>continuous surface profiling</i>. In order
+	to make sure Beaglebone receives all the measurements, the dsPIC generates pulses when new measurements are available. Because Beaglebone sometimes misses the signal during CPU intensive tasks,
+	a recovery algorithm was devised. At the end of the measurement package, the write and read pointer positions are added and therefore can be compared with pulses received by Beaglebone. It then
+	recovers the missing signals. </br>
+	The system is becoming increasingly complex. The Beaglebone is taking pictures from a web cam, translating and verifying measurements and logging everything onto a flash drive while uploading everything to a cloud. Not missing picture 
+	is crucial for high resolution surface profiling. 
+	</p>
+	</br>
+	<p><b>Reliability testing</b></br>
+	The data logged by Beaglebone was analysed using a C# program to check time delay between each measurements based on dsPIC's timer. In addition, the encoder difference,
+	accelerometer, gyro, magnitometer and laser were plotted to verify if there are any corruption in data logging. </br>
+	<b>results:</b></br>
+	Because dsPIC33 family limits the SPI bus speed to a most 35MHz(half of the system clock speed), 24MHz was chosen so dsPIC has enough clock cycles in interrupt routines
+	to load measurements. The transaction for each packet(128 Byte, seven measurements) takes around 0.05ms, which makes a 2KHz surface profiling feasible.
+	</p>
+	</br><hr/>
+	<h3>Our first professionally-made board</h3>12/14/2014
+	<p>
+	We received five professionally made boards for PathMeT this week and they work perfectly(except one LED was soldered backwards by accident)!</br>
+	<img src="pics/new_board.jpg"></br>
+	<i>Co-design: Ian McIntyre</i></br>
+	The new board is mainly changing most of the through-hole components into surface mount ones to increase reliability under vibrations. During data collection in DC, we
+	noticed sometimes the SD card slick would disconnect because of poor solder joints. My boss Eric Sinagra is going down to DC today again and I hope everything will be
+	good!
+	</p>
+	
+	
+	</br><hr/>
+	<h3>IMU with Kalman Filter</h3>5/13/2014
+	<p>This project aims at finding an accurate way to provide heading using 9-DOF IMUs. Because different applications have different requirements, this project
+	, as a part of PathMeT, requires accurate and fast readings under dynamic environment(+-0.3g).<br/>
+	Under high vibrations, integrating gyro measurements will result in over-shoot or under-shoot. 
+	This is the first try to use Kalman filter with dynamic tuning in order to minimize the converging time. <br/></p>
+	<p>1: Static error: +-0.2 deg<br/>
+
+	2: Dynamic error under high external acceleration: +-0.5deg when external acceleration is +- 0.4g<br/>
+
+	3: Drop test<br/>
+	When the drop creates rapid change in gyro readings (+-200deg/s), the filter takes some time to converge to true value because the error in gyro is so big. The overshot also happens but gets corrected within 2 seconds. When the drop only changes gyro readings within +-100deg/s, the overshot is within 2degs.<br/>
+
+	Sampling frequency: 100Hz<br/>
+
+	<b>Setup:</b> Arduino micro + 6DOF(MinIMU-9 v2 from pololu)<br/></p>
+	
+	<p>
+	<div class="embed-responsive embed-responsive-16by9" style="margin: 0 auto;text-align:center;">
+    <iframe allowfullscreen="" src="http://www.youtube.com/embed/FS--z3dFErM" frameborder="0"></iframe>
+    </div>
+	</br>
+	As you can see in the video, the setup is very easy to implement even though it is not ideal due to inclined desk, vibration from AC unit and so on. But it's a proof
+	of concept that the implemented kalman filter works but has certain limitations. The sensor board is calibrated under the same environment.
+	</p>
+	<p>I also tested some other filters such as <a href="http://www.x-io.co.uk/open-source-imu-and-ahrs-algorithms/">Madgwick's</a> and <a href="http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=4608934&url=http%3A%2F%2Fieeexplore.ieee.org%2Fstamp%2Fstamp.jsp%3Ftp%3D%26arnumber%3D4608934">Mahony's DCM</a> 
+	filters. It turns out that Mahony's filter has a constant converging rate whereas Madgwick's filter
+	converges according to coefficients chosen. Madgwick's filter will drift over time if there are continuous vibrations over 0.3g. The drift is about 1 deg/15 sec (lab environment, 300HZ sampling rate, dynamic tuning according to linear acceleration). Mahony's
+    filter, on the other hand, doesn't drift. It is however more susceptible to	linear acceleration. The error is around 4 deg/0.3g (lab environment).</br>
+	I decided to use Madgwick's filter because it is less computational intensive and easy to implement and tune in real-time.
+	Unfortunately I didn't record a video to compare all three algorithms but during data collecting trip in Washinton DC (real-world environment), the incline data looked pretty good.</p>
+	<p><b>Conclusion:</b></br>
+	Because the Madgwick's filter is computational effective and easy to implement, in the future I decide to create an IMU module for PathMet running this algorithm on board using a dsPIC chip. 
+	Also, I will try to ramp up the sampling rate to 1 KHZ in order to get a better transient response (analogous to experiencing a depression on broken sidewalks). In real-world
+	situation, the IMU on PathMet does not usually experience continuous vibration in X or Y direction (cross slope and running slope) so pitch and roll should 
+	converge to true value quickly. If there exists really bad sidewalk, we will try to use a running average filter and look at laser data more.
+	</p>
+	<p>Project credits: Kevin J. Chau (intern at HERL)</p>
+	
+	
+	
+	</br><hr/>
+	<h3>Proof of concept: logging data using a Beaglebone Black and a dsPIC micro-controller</h3>1/05/2014
+	<p>
+	Because a high speed data acquisition device need to interface sensors and log data on storage unit, I found it hard to only use micro-controllers to manage files with out
+	any help from an OS. It is possible that one or more micro-controllers can work together but that increases the complexity in debugging and developing more features in the future.
+	</br>
+	Here is a sub-project to showcase that using a embedded Linux computer with a dsPIC can be advantageous in terms of speed and simplicity.</p>
+	<p><b>Setup:</b></br>
+	1.Beaglebone Black kernel 3.8.13</br>
+    2.Kernel that supports LCD and SPI at the same time</br>
+	3.LCD4 cape</br>
+	4.pic18f4550 at Vcc=3.6v, external crystal=4Mhz, CPU Clock=48Mhz.</br>
+	</p>
+	<p>
+	Beaglebone Black as SPI master (using spi0 on P9 header). Master: SPI max allowed frequency = 16Mhz. Actual frequency = 5Mhz (because pic18f cannot run as fast at 3.3v)</br>
+    Pic18f as SPI slave. The master requests 18bytes for 100000 times and logs all received bytes at each iteration. The time elapsed is displayed at the end. 
+	</p>
+	<p><b>Results:</b></br>
+	Total transaction of 1800000Bytes is 11sec on average when BBB gets power supply from USB.</br>
+	1800000Bytes/11sec=163Bytes/ms.</br>
+
+	At spi frequency above 5Mhz, there are many corruptions in the logged file. It looks like the pic18f cannot keep up refilling spi buffer.</br>  
+
+	The time elapsed shown below is in usec. Usually writing to an old file is a little bit faster. Below is part of the testing results.</br>
+	</p>
+	<img src="pics/BBB.png">
+	<p>Picture: part of the results. There is a variation in writing to an old file vs. new one.</br>
+                   First trial: Spi Clock=6MHz, a lot of corruption. Time elapsed = 7664999usec</br>
+                   Second trail: Spi Clock=5Mhz, no corruption to an old file. Time elapsed = 10918493usec</br>
+                   Third trail: Spi Clock=5Mhz, no corruption to a new file. Time elapsed = 12258088usec</br>
+                   Fourth trail: Spi clock=5Mhz, no corruption to an old file. Time elapsed = 10846516 usec</br>
+                  Average transaction (including spi and writing): 1800000Bytes/11sec=163Bytes/ms.</p>
+				  
+	</br>
+	<p><b>Conclusion:</b></br>
+	Beaglebone Black has a strong processing power. Further test will be conducted with faster chips such as dspic33ep.
+	Next test will be reading from a USB webcam. The last test will be combining real-time plot, 
+	spi communications and reading from USB webcam to determine the final performance and suitability for our project PathMet.	
+	</p>
+	</br><hr/>
+	
+	
+	
+	<h3>Proof of concept: Plotting in real-time during data acquisition</h3>12/04/2013
+	<p>Plotting during data acquisition without compromising performance is hard using only microcontrollers although it was done here. This sub-project
+	is to demonstrate the plotting ability of Beaglebone Black using Qt. For future development, anyone can create real-time plots using data from 
+	a septate micro-controller.</p>
+	
+	<p>
+	<b>set up:</b></br>
+    Angstrom Distribution</br>
+    qt application for the user interface</br>
+    qcustomplot for graph plotting</br>
+    spi.dev for communication with a Mcu(dsPIC33EP512mu810)</br>
+    A sine wave is generated to simulate outside data</br>
+    Beaglebone Black will be connected to an USB cam for high resolution picture.</br>
+    Powered from USB for now. Using an adapter can improve performance.
+	</p>
+	<div class="embed-responsive embed-responsive-16by9" style="margin: 0 auto;text-align:center;">
+    <iframe allowfullscreen="" src="http://www.youtube.com/embed/8Zc92m2vjpU" frameborder="0"></iframe>
+    </div>
+	<p><b>Result:</b></br>
+	The Qt program updates the graph every 10ms. There is no lag whatsoever on the graph. 
+	Users can feed sensor data directly to the beaglebone through SPI0 and plot accordingly. 
+	However, the 6.23 distribution has a bug (see below), you need to recompile the kernel in order to 
+	enable LCD cape and SPI0 virtual cape at the same time (see rebuilding Angstrom, the instructions might be outdated). 
+	BBB's SPI can only act as a Master so it's perfect to use another uC to organize data and feed it in.
+	</p>
+    </br><hr/>
+	
+	
+	
+	<h3>Biped Robot</h3>11/28/2013
+	<p>Here is an interesting project I was working on during thanksgiving</br>
+	<b>Setup:</b></br>
+	 1.Arduino Micro</br>
+     2.4 Hitec S-55 micro-servos</br>
+     3.3D printed parts (available on Thiniverse: <a href="http://www.thingiverse.com/thing:117388">LINK</a> )</br>
+     4.Powered from a USB port***</br>
+	</p>
+	<div class="embed-responsive embed-responsive-16by9" style="margin: 0 auto;text-align:center;">
+    <iframe allowfullscreen="" src="http://www.youtube.com/embed/Es3Uoc7ldBY" frameborder="0"></iframe>
+    </div>
+	<p>
+	***USB port can only draw a small amount of current.</br>
+ 
+	It uses arduino servo library to drive 4 servos sharing the same power supply with the arduino. </br>
+	A lot of people say servos should be connected to external power because sudden current draw can
+	reset the arduino. However, in this case where micro-servos and a huge capacitor are used, 
+	no unexpected behavior is observed. This is also because the robot does not put a lot of load on the bottom two servos.</br>
+	Anyway, using an external power supply for servos is a good practice.</br>
+	</p>
+	<p><b>Results:</b><br/>
+	Fun.</p>
+	</br><hr/>
+	
+	
+	
+	<h3>Show case of PathMet</h3>10/04/2013
+	<p>This is a show case of the first working prototype of PathMet (<a href="http://www.pathvu.com">Pathway roughness measurement tool</a> for wheelchair users. US and International patent pending)</p>
+	<div class="embed-responsive embed-responsive-16by9" style="margin: 0 auto;text-align:center;">
+    <iframe allowfullscreen="" src="http://www.youtube.com/embed/Ecy1Fbvhz1Y" frameborder="0"></iframe>
+    </div>
+	<p><b>Intro:</b></br>
+	PathMet is a device that can measure surface roughness for sidewalks. It is developed at <a href="http://www.herl.pitt.edu/">Human Engineering Lab(HERL)</a> supervised by <a href="http://www.herl.pitt.edu/person/jon-pearlman">Dr. Jon Pearlman</a>, 
+	HERL's Associate Director of Engineering and assistant professor in the Department of Rehabilitation Science & Technology at the <a href="http://www.pitt.edu">University of Pittsburgh</a>.  
+	</p>
+	<p>PathMeT is a revolutionary surface profiler which measures sidewalk accessibility according to <a href="http://www.access-board.gov/guidelines-and-standards/buildings-and-sites/about-the-ada-standards/guide-to-the-ada-standards">U.S. 
+	Access Board standards</a>. Our tools can help property owners improve communities so that all people travel safely. It was Supported by the <a href="http://www.icpi.org/">ICPI</a>, <a href="http://www.gobrick.com/">BIA</a>, <a href="http://nciia.org/">NCIIA</a>, and the Univ.
+	of Pittsburgh Innovation Institute. Winner of the 2014 Randall Family Big Idea Competition.</p>
+	<p><b>Setup:</b></br>
+	1.dsPICs<br/>
+	2.FT800 screen from mikroelektronika<br/>
+	3.Sensors: Laser, inclinometer, encoders<br/>
+	</p>
+	<p>Since this is the first working compete prototype, it is still under development. The main reason I want to show this video is because I created an algorithm
+	to plot real-time data from sensors. The FT800 library provided by mikroelektronika only has primitive functions to create lines and dots during compile time
+	. I managed to manipulate the color, visibility and the position of lines on the fly to work around that limitation. 
+	
+	<p>Here is a picture of PathMet's main board, a very early version (you can see those manually soldered wires sticking out). It has been improved much more since then.</p>
+	<img src="pics/pathmet.jpg">
+	<p><i>A very old picture of the main board</i></p>
+	<p><b>Results:</b></br>
+	PathMet team is going to DC to collect some sidewalk data!	
+	</p>
+	
+	
+	
+	</br><hr/>
+	<h3>Meal Buddy</h3>5/20/2013
+	<p>
+	This project is supervised by <a href="https://www.linkedin.com/profile/view?id=181478486&authType=NAME_SEARCH&authToken=cxuK&locale=en_US&trk=tyah2&trkInfo=tarId%3A1410129487400%2Ctas%3Ajonathon%2Cidx%3A1-1-1">Jonathan Duvall</a>, a graduate student at University of Pittsburgh School of Health and Rehabilitation Sciences.
+	Meal Buddy is an electronic assistive robotic feeder. The original device purchased from Patterson Medical receives user input from a PS3 controller to perform certain actions.
+	Usually it is used by caregivers for people who cannot move their arms.</br>
+    Here at HERL, we decided to develop a computer program to interface with the robotic feeder so that it will take voice commands.
+	</p>
+	<p><b>Components:</b></br>
+	Meal Buddy</br>
+	Voice recognition software</br>
+	Pic4550</br>
+	C# software</br>
+	</p>
+	<p>A voice recognition software will generate pre-defined key strokes and a C# software will intercept keys and send commands to a micro-controller. Then the
+	micro-controller will mimic a PS3 controller and run servos to feed food.</p>
+	<p>The enhanced device is being used in UPMC Mercy Rehabilitation Institute</p>
+	<img src="pics/mealbuddy1.jpg">
+	<img src="pics/mealbuddy2.jpg">
+	<img src="pics/mealbuddy3.jpg">
+	<p>image courtesy: Patterson Medical.</p>
+	
+	
+	
+	
+	
+</div><!-- container-->
+<!--##############################footer#############################-->
+</br>
+<div class="navbar navbar-default" style="margin-bottom:0px;margin-left:0px;margin-right:0px;clear:both;">
+	<div id="footer">
+		<div class="container">
+		<p class="muted credit">Powered by <a href="http://getbootstrap.com/" target="_blank">Bootstrap 3.2.0</a>. Last update 2014</p>
+		</div>
+	</div>
+</div>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
