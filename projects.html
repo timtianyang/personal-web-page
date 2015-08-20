@@ -45,6 +45,55 @@
 	
 	
 	<!--##############################content############################ -->
+	<h3>3D image processing: PCL and Kinect</h3>8/11/2015
+	<p>During my internship at ABB Robotics Shanghai, I participated in a 3D image processing project used in assembly lines.</p></br>
+	<p>Originally, one of their customers used their old set up with an expensive 3D laser sensor which can only output point clouds in XYZ and XYZI formats. 
+	They wanted to recognize boxes of two different sizes. However, when two boxes were put close to each other, their (normal estimation) algorithm failed. 
+	Therefore, the lead engineer assigned me to write code to explore color based segmentation with Microsoft Kinect.</br>
+	Microsoft Kinect gave very good results because it outputs point cloud in XYZRGB format. Adjusting parameters in region growing algorithm is very crucial. </br>	
+	Here are two clouds captured by Kinect. The objects to be segmented are two white boards that are close to each other.</br></p>
+	<table border="1" >
+	<tr>
+		<th><img src="pics\pcl\capture_RGB2.PNG"></th>
+		<th><img src="pics\pcl\capture_RGB1.PNG"></th>
+	</tr>
+	<tr align="center">
+		<td><b>boards with less than 5mm gap</b></td>
+		<td><b>boards with no gap</b></td>
+	</tr>
+	<tr>
+		<th><img src="pics\pcl\RGB2.PNG"></th>
+		<th><img src="pics\pcl\RGB1.PNG"></th>
+	</tr>
+	</table>
+    <p>
+	In order to further compare RGB and Normal based segmentation algorithm on the original sensor, I multiplied intensity with some constants to simulate RGB elements. The results
+	are obvious that in some situations, normal based segmentation does not work(red region is invalid).</br>	</p>
+	<table border="1" >
+	<tr>
+		<th><img src="pics\pcl\normal.PNG"></th>
+		<th><img src="pics\pcl\rgb.PNG"></th>
+	</tr>
+	<tr align="center">
+		<td><b>Normal based segmentation</b></td>
+		<td><b>Color based segmentation</b></td>
+	</tr>
+	<tr>
+		<th><img src="pics\pcl\normalout.PNG"></th>
+		<th><img src="pics\pcl\rgbout.PNG"></th>
+	</tr>
+	</table>
+	</br>
+	<p>
+	<b>Conclusion:</b></br>
+	Even though only normal estimation has multi-thread support, the speed difference isn't very big (~100ms). The general speed however, is largely related to the size of 
+	the cloud. In the duration of my internship I wasn't able to explore the GPU implementation (PCL 1.72 doesn't officially support GPU). I think the GPU speed will 
+	easily out-match any multi-thread implementations. The color based segmentation is very sensitive to ambient light, also Kinect sensor has limited depth resolution. 
+	Parameters need to be adjusted under real assembly line to find the optimal values. Well, Kinect works and it saves money.
+	</p>
+	</br><hr/>
+	
+	
 	<h3>Assistive Gaze-tracking Headset</h3>4/16/2015
 	<p>This a senior design project with my friends at the University of Pittsburgh in Spring 2015.</p></br>
 	<p>The goal of this project was to make a low cost device to help people with no or minimal limb control to
