@@ -45,12 +45,26 @@
 	
 	
 	<!--##############################content############################ -->
+	<h3>RT-Xen</h3>11/28/2015
+	<p>
+	I contributed to RT-Xen: rtxen-v2.2-full-feature branch. The RT-Xen was upgraded to be based on the official Xen 4.6
+	release and the following features had been added:</br>
+	<ul>
+		<li>Per-vcpu setting</li>
+		<li>Switching between RM and EDF on the fly</li>
+	</ul>
+	More information on RT-Xen can be found here:  <a href="https://sites.google.com/site/realtimexen/home">https://sites.google.com/site/realtimexen/home</a></br>
+	The code and commits can be found at here: <a href="https://github.com/pennpanda/RT-Xen">https://github.com/pennpanda/RT-Xen</a>
+	
+	</p>
+	</br><hr/>
 	<h3>3D image processing: PCL and Kinect</h3>8/11/2015
-	<p>During my internship at ABB Robotics Shanghai, I participated in a 3D image processing project used in assembly lines.</p></br>
-	<p>Originally, one of their customers used their old set up with an expensive 3D laser sensor which can only output point clouds in XYZ and XYZI formats. 
-	They wanted to recognize boxes of two different sizes. However, when two boxes were put close to each other, their (normal estimation) algorithm failed. 
-	Therefore, the lead engineer assigned me to write code to explore color based segmentation with Microsoft Kinect.</br>
-	Microsoft Kinect gave very good results because it outputs point cloud in XYZRGB format. Adjusting parameters in region growing algorithm is very crucial. </br>	
+	<p>It is a challenge for robots on assembly lines to recognize and pick up closely positioned objects.</br>
+	Originally, people use expensive 3D laser sensors which can only output point clouds in XYZ and XYZI formats. 
+	When two boxes are put close to each other, not well tuned normal estimation algorithm often fail. 
+	There is an easy way to solve this using color based segmentation with Microsoft Kinect.
+	Microsoft Kinect gives very good results because it outputs point cloud in XYZRGB format with decent view width and height. The extra dimension of data makes both 
+	comparing color and normal based algorithms and picking the best one possible. More importantly, it's more accessible than a laser scanner that costs thousands of dollars. </br>	
 	Here are two clouds captured by Kinect. The objects to be segmented are two white boards that are close to each other.</br></p>
 	<table border="1" >
 	<tr>
@@ -87,9 +101,9 @@
 	<p>
 	<b>Conclusion:</b></br>
 	Even though only normal estimation has multi-thread support, the speed difference isn't very big (~100ms). The general speed however, is largely related to the size of 
-	the cloud. In the duration of my internship I wasn't able to explore the GPU implementation (PCL 1.72 doesn't officially support GPU). I think the GPU speed will 
-	easily out-match any multi-thread implementations. The color based segmentation is very sensitive to ambient light, also Kinect sensor has limited depth resolution. 
-	Parameters need to be adjusted under real assembly line to find the optimal values. Well, Kinect works and it saves money.
+	the cloud. I wasn't able to explore the GPU implementation (PCL 1.72 doesn't officially support GPU) but the GPU will 
+	easily out-match any multi-thread implementations. The color based segmentation is very sensitive to ambient light, in addition to limited depth resolution of the sensor. 
+	Parameters need to be adjusted on an assembly line to find the optimal values. This examples proves that with the right set-up, algorithm and tunning, the cost can be reduced to 1% of the original.
 	</p>
 	</br><hr/>
 	
@@ -99,8 +113,8 @@
 	<p>The goal of this project was to make a low cost device to help people with no or minimal limb control to
 	interface a computer. It utilizes a webcam (PS3eye) and a 9-dof (mpu-9150) to capture eye movement and head
 	orientation. The initial plan was to combine both measurements but we ran out of time before the Design Expo.
-	Eye tracking worked fine in x-direction. In y-direction, eye movements were too small to give us any useful
-	information. However, the head tracking by itself could manipulate mouse very well, with the help of an adaptive low
+	Eye tracking worked fine only in x-direction because eye movements were too small to give us any useful
+	information in y. However, the head tracking by itself could manipulate mouse very well, with the help of an adaptive low
 	pass filter.</br>
 	<img src="pics/headset.png"><img src="pics/headset2.png"></br>		
 	The <a href="pics/DesignSpecification.pdf">design specs</a> and <a href="pics/headset.pdf">poster</a> can be downloaded.</br>
@@ -112,7 +126,7 @@
 	
 	 
 	 
-	<h3>A crowd-sourcing sidewalk mapping tool: Crowdvu(android-based)</h3>4/1/2015
+	<h3>A crowd-sourcing sidewalk mapping tool: Crowdvu(android)</h3>4/1/2015
 	<p>CrowdVu is a crowdsourcing tool focused on improving accessibility and walkability along sidewalks 
 	and other pedestrian pathways. It allows users to report the locations of hazards along these pathways. 
 	Users can then visualize these hazards on a map, including those hazards submitted by other users. 
@@ -129,8 +143,8 @@
 	<h3>A crowd-sourcing sidewalk mapping tool (web-based)</h3>1/13/2015
 	
 	<p>As a part of the pedestrian way finding application, a side-walk mapping tool was created
-	to allow the public to map sidewalks in their community. Even though google has a great map, accessibility info is missing. Here at PathVu, we
-	will take the lead.</p>
+	to allow the public to map sidewalks in their community. Even though google has a great map, accessibility info is missing. This mapping tool is great for people to map out
+	sidewalks network, which is vital for building databases on accessibility info.</p>
 	<p>The idea is to map existing sidewalk routes by letting anyone create nodes and connect them on an intuitive user interface. The nodes, combined with sidewalk accessibility measurements, can be
 	used to create a way finding tool. The <a href="Mapping.html">Beta</a> of this tool will be released soon for testing even though it's not connected to any actual data-base. </p>
 	
@@ -143,7 +157,7 @@
 	
 	
 	
-	
+	<!--
 	</br><hr/>
 	<h3>A cape for Beaglebone</h3>1/10/2015
 	<p>
@@ -195,7 +209,7 @@
 	noticed sometimes the SD card slick would disconnect because of poor solder joints. My boss Eric Sinagra is going down to DC today again and I hope everything will be
 	good!
 	</p>
-	
+	-->
 	
 	</br><hr/>
 	<h3>IMU with Kalman Filter</h3>5/13/2014
@@ -219,7 +233,7 @@
     <iframe allowfullscreen="" src="http://www.youtube.com/embed/FS--z3dFErM" frameborder="0"></iframe>
     </div>
 	</br>
-	As you can see in the video, the setup is very easy to implement even though it is not ideal due to inclined desk, vibration from AC unit and so on. But it's a proof
+	The setup is very easy to implement even though it is not ideal due to inclined desk, vibration from AC unit and so on. But it's a proof
 	of concept that the implemented kalman filter works but has certain limitations. The sensor board is calibrated under the same environment.
 	</p>
 	<p>I also tested some other filters such as <a href="http://www.x-io.co.uk/open-source-imu-and-ahrs-algorithms/">Madgwick's</a> and <a href="http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=4608934&url=http%3A%2F%2Fieeexplore.ieee.org%2Fstamp%2Fstamp.jsp%3Ftp%3D%26arnumber%3D4608934">Mahony's DCM</a> 
@@ -237,7 +251,7 @@
 	<p>Project credits: Kevin J. Chau (intern at HERL)</p>
 	
 	
-	
+	<!--
 	</br><hr/>
 	<h3>Proof of concept: logging data using a Beaglebone Black and a dsPIC micro-controller</h3>1/05/2014
 	<p>
@@ -307,7 +321,7 @@
 	BBB's SPI can only act as a Master so it's perfect to use another uC to organize data and feed it in.
 	</p>
     </br><hr/>
-	
+	-->
 	
 	
 	<h3>Biped Robot</h3>11/28/2013
@@ -351,9 +365,9 @@
 	<p><b>Setup:</b></br>
 	1.dsPICs<br/>
 	2.FT800 screen from mikroelektronika<br/>
-	3.Sensors: Laser, inclinometer, encoders<br/>
+	3.Sensors: Laser, accelerometer, gyroscope, magnetometer, encoders, GPS, UART camera<br/>
 	</p>
-	<p>Since this is the first working compete prototype, it is still under development. The main reason I want to show this video is because I created an algorithm
+	<p>Since this is the first working compete prototype, it is still under development. I created an algorithm
 	to plot real-time data from sensors. The FT800 library provided by mikroelektronika only has primitive functions to create lines and dots during compile time
 	. I managed to manipulate the color, visibility and the position of lines on the fly to work around that limitation. 
 	
